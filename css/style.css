@@ -1,14 +1,17 @@
 body {padding:10px}
 
 #draggable-field {
-    width:600px;
-    height:600px;
+    margin: 0 auto;
+    width:400px;
+    height:400px;
     background-color:#fff;
     padding:10px 12px;
     border: 1px solid black;
 }
 
 span {
+    left: 423px;
+    top: 145px;
     width:60px;
     height:20px;
     background-color: #5d7cff;

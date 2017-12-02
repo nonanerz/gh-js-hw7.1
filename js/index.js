@@ -1,7 +1,8 @@
 var draggableObject = null
 var mouseOffset = null
+var draggableField = document.getElementById('draggable-field')
 
-document.getElementById('draggable-field').addEventListener('mousedown', function(event)
+draggableField.addEventListener('mousedown', function(event)
 {
     draggableObject = event.target
     draggableObject.className = 'selected'
@@ -13,8 +14,6 @@ document.getElementById('draggable-field').addEventListener('mousedown', functio
         y: event.pageY - pos.y
     }
 
-    console.log(pos)
-
 }, false)
 
 document.getElementById('draggable-field').addEventListener('mouseup', function()
@@ -22,35 +21,33 @@ document.getElementById('draggable-field').addEventListener('mouseup', function(
     draggableObject.className = ''
     draggableObject = null
 
-    console.log(draggableObject)
-
 }, false)
+
+
 
 document.getElementById('draggable-field').addEventListener('mousemove', function(event)
 {
-    var offsetX
-    var offsetY
+
     if (draggableObject) {
+        console.log(draggableField.offsetLeft + draggableField.offsetWidth, draggableObject.offsetLeft)
 
-        if (event.pageX - mouseOffset.x < 0) {
-            offsetX = 0;
-        } else if (event.pageX - mouseOffset.x + 102 > document.body.clientWidth) {
-            offsetX = document.body.clientWidth - 102;
-        } else {
-            offsetX = event.pageX - mouseOffset.x;
+        if (
+            (draggableField.offsetLeft - event.pageX + mouseOffset.x) < 0 &&
+            (draggableField.offsetLeft + draggableField.offsetWidth - draggableObject.offsetLeft - 60) > 0
+        )
+        {
+            draggableObject.style.left = event.pageX - mouseOffset.x + 'px'
         }
 
-        if (event.pageY - mouseOffset.y < 0) {
-            offsetY = 0;
-        } else if (event.pageY - mouseOffset.y + 102 > document.body.clientHeight) {
-            offsetY = document.body.clientHeight - 102;
-        } else {
-            offsetY = event.pageY - mouseOffset.y;
+        if (
+            (draggableField.offsetTop - event.pageY + mouseOffset.y) < 0 &&
+            (draggableField.offsetTop + draggableField.offsetHeight - draggableObject.offsetTop - 20) > 0
+        )
+        {
+            draggableObject.style.top = event.pageY - mouseOffset.y  + 'px'
         }
-        draggableObject.style.left = offsetX + 'px'
-        draggableObject.style.top = offsetY  + 'px'
+
     }
-    console.log(event.screenX, event.screenY)
 }, false)
 
 
