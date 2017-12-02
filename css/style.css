@@ -10,7 +10,7 @@ body {padding:10px}
 }
 
 span {
-    width:60px;
+    min-width:60px;
     height:20px;
     border: 1px dashed black;
     position: absolute;
@@ -21,8 +21,9 @@ span {
 }
 
 #remove {
-    border-right: 1px solid black;
-    padding: 0 3px ;
+    float: right;
+    border-left: 1px solid black;
+    padding-left: 3px ;
     margin: 0 3px 0 3px;
     color: red;
     display: inline-block;

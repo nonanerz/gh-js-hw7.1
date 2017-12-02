@@ -4,9 +4,6 @@ var draggableField = document.getElementById('draggable-field')
 
 draggableField.addEventListener('mousedown', function(event)
 {
-    if (event.target.tagName === 'IMG') {
-        return false
-    }
     draggableObject = event.target
     var pos = getPosition(draggableObject)
     mouseOffset= {
@@ -15,24 +12,28 @@ draggableField.addEventListener('mousedown', function(event)
     }
     if (draggableObject.id === 'draggable-field') {
         var child = document.createElement('span')
+        child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
         child.style.top = event.clientY - 10 + 'px'
         child.style.left = event.clientX - 30 + 'px'
         draggableObject.appendChild(child)
 
     } else if (draggableObject.id === 'remove') {
         var span = document.getElementById('remove').parentNode
-        span.parentNode.removeChild(span);
+        span.parentNode.removeChild(span)
     } else {
         if (document.getElementById('last-selected') && document.getElementById('last-selected') !== draggableObject) {
-            console.log(document.getElementById('last-selected'), draggableObject)
-
             var elem = document.getElementById('last-selected')
                 elem.removeAttribute('id')
-                elem.innerHTML = ''
+                elem.removeChild(document.getElementById('remove'))
         }
         draggableObject.className = 'selected'
         draggableObject.setAttribute('id', 'last-selected')
-        draggableObject.innerHTML = '<div id="remove">x</div>'
+        if (!draggableObject.contains(document.getElementById("remove"))) {
+            var childDiv = document.createElement('div')
+                childDiv.setAttribute('id', 'remove')
+                childDiv.innerText = 'x'
+            draggableObject.appendChild(childDiv)
+        }
     }
 }, false)
 
@@ -47,7 +48,7 @@ document.getElementById('draggable-field').addEventListener('mousemove', functio
     if (draggableObject) {
         if (
             (draggableField.offsetLeft - event.pageX + mouseOffset.x) < 0 &&
-            (draggableField.offsetLeft + draggableField.offsetWidth - event.pageX + mouseOffset.x - 62) > 0
+            (draggableField.offsetLeft + draggableField.offsetWidth - event.pageX + mouseOffset.x - draggableObject.clientWidth - 2) > 0
         )
         {
             draggableObject.style.left = event.pageX - mouseOffset.x + 'px'
@@ -80,3 +81,21 @@ function getPosition(e) {
         y: top
     }
 }
+
+function getLorem(len) {
+    var words = ['lorem',
+        'ipsum',
+        'dolor',
+        'sit',
+        'amet'
+    ]
+    var wordCount = (len > words.length) ? (words.length - 1) : len
+    var extracted = []
+
+    for (var i = 0; i < wordCount; i++) {
+        var word = Math.floor(Math.random() * words.length)
+        extracted[i] = words[word]
+    }
+    return extracted.join(' ')
+}
+
