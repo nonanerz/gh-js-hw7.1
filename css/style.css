@@ -10,14 +10,20 @@ body {padding:10px}
 }
 
 span {
-    left: 423px;
-    top: 145px;
     width:60px;
     height:20px;
-    background-color: #5d7cff;
+    border: 1px dashed black;
     position: absolute;
 }
 
 .selected {
     background-color: aquamarine;
+}
+
+#remove {
+    border-right: 1px solid black;
+    padding: 0 3px ;
+    margin: 0 3px 0 3px;
+    color: red;
+    display: inline-block;
 }
