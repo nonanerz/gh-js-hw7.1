@@ -77,7 +77,7 @@ function onMove(event) {
                 draggableObject.style.top = event.pageY - mouseOffset.y  + 'px'
             }
         } else {
-
+            event.preventDefault()
             if (
                 (draggableField.offsetLeft - event.changedTouches[0].pageX) < 0 &&
                 (draggableField.offsetLeft + draggableField.offsetWidth - event.changedTouches[0].pageX - draggableObject.clientWidth - 2) > 0
