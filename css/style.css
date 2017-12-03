@@ -17,7 +17,6 @@ span {
     height:20px;
     border: 1px dashed black;
     position: absolute;
-    overflow: hidden;
 }
 
 .selected {
