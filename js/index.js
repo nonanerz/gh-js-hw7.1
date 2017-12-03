@@ -2,9 +2,7 @@ var draggableObject = null
 var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
 
-draggableField.addEventListener('mousedown', onTouch, false)
-
-function onTouch(event)
+draggableField.addEventListener('mousedown', function (event)
 {
     draggableObject = event.target
     var pos = getPosition(draggableObject)
@@ -37,7 +35,9 @@ function onTouch(event)
             draggableObject.appendChild(childDiv)
         }
     }
-}
+}, false)
+
+
 
 document.getElementById('draggable-field').addEventListener('mouseup', onTouchEnd, false)
 document.getElementById('draggable-field').addEventListener('touchend', onTouchEnd, false)
