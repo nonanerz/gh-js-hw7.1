@@ -2,7 +2,10 @@ var draggableObject = null
 var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
 
-draggableField.addEventListener('mousedown', function (event)
+draggableField.addEventListener('touchstart', onTouch, false)
+draggableField.addEventListener('mousedown', onTouch, false)
+
+function onTouch(event)
 {
     draggableObject = event.target
     var pos = getPosition(draggableObject)
@@ -12,11 +15,17 @@ draggableField.addEventListener('mousedown', function (event)
     }
     if (draggableObject.id === 'draggable-field') {
         var child = document.createElement('span')
-        child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
-        child.style.top = event.clientY - 10 + 'px'
-        child.style.left = event.clientX - 30 + 'px'
-        draggableObject.appendChild(child)
-
+        if (event.type === 'touchstart') {
+            child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
+            child.style.top = event.changedTouches[0].clientY - 10 + 'px'
+            child.style.left = event.changedTouches[0].clientX - 30 + 'px'
+            draggableObject.appendChild(child)
+        } else {
+            child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
+            child.style.top = event.clientY - 10 + 'px'
+            child.style.left = event.clientX - 30 + 'px'
+            draggableObject.appendChild(child)
+        }
     } else if (draggableObject.id === 'remove') {
         var span = document.getElementById('remove').parentNode
         span.parentNode.removeChild(span)
@@ -35,7 +44,7 @@ draggableField.addEventListener('mousedown', function (event)
             draggableObject.appendChild(childDiv)
         }
     }
-}, false)
+}
 
 
 
@@ -47,24 +56,44 @@ function onTouchEnd() {
     draggableObject = null
 }
 
-document.getElementById('draggable-field').addEventListener('mousemove', onMove, false)
 document.getElementById('draggable-field').addEventListener('touchmove', onMove, false)
+document.getElementById('draggable-field').addEventListener('mousemove', onMove, false)
 
 function onMove(event) {
     if (draggableObject) {
-        if (
-            (draggableField.offsetLeft - event.pageX + mouseOffset.x) < 0 &&
-            (draggableField.offsetLeft + draggableField.offsetWidth - event.pageX + mouseOffset.x - draggableObject.clientWidth - 2) > 0
-        )
-        {
-            draggableObject.style.left = event.pageX - mouseOffset.x + 'px'
-        }
-        if (
-            (draggableField.offsetTop - event.pageY + mouseOffset.y) < 0 &&
-            (draggableField.offsetTop + draggableField.offsetHeight - event.pageY + mouseOffset.y - 22) > 0
-        )
-        {
-            draggableObject.style.top = event.pageY - mouseOffset.y  + 'px'
+        if (event.type === 'mousemove') {
+            if (
+                (draggableField.offsetLeft - event.pageX + mouseOffset.x) < 0 &&
+                (draggableField.offsetLeft + draggableField.offsetWidth - event.pageX + mouseOffset.x - draggableObject.clientWidth - 2) > 0
+            )
+            {
+                draggableObject.style.left = event.pageX - mouseOffset.x + 'px'
+            }
+            if (
+                (draggableField.offsetTop - event.pageY + mouseOffset.y) < 0 &&
+                (draggableField.offsetTop + draggableField.offsetHeight - event.pageY + mouseOffset.y - 22) > 0
+            )
+            {
+                draggableObject.style.top = event.pageY - mouseOffset.y  + 'px'
+            }
+        } else {
+
+            if (
+                (draggableField.offsetLeft - event.changedTouches[0].pageX) < 0 &&
+                (draggableField.offsetLeft + draggableField.offsetWidth - event.changedTouches[0].pageX - draggableObject.clientWidth - 2) > 0
+            )
+            {
+                console.log(event.changedTouches[0].clientX + 'px')
+
+                draggableObject.style.left = event.changedTouches[0].clientX + 'px'
+            }
+            if (
+                (draggableField.offsetTop - event.changedTouches[0].pageY) < 0 &&
+                (draggableField.offsetTop + draggableField.offsetHeight - event.changedTouches[0].pageY - 22) > 0
+            )
+            {
+                draggableObject.style.top = event.changedTouches[0].pageY  + 'px'
+            }
         }
     }
 }
