@@ -2,7 +2,10 @@ var draggableObject = null
 var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
 
-draggableField.addEventListener('touchstart', function(event)
+draggableField.addEventListener('mousedown', onTouch, false)
+draggableField.addEventListener('touchstart', onTouch, false)
+
+function onTouch(event)
 {
     draggableObject = event.target
     var pos = getPosition(draggableObject)
@@ -23,28 +26,32 @@ draggableField.addEventListener('touchstart', function(event)
     } else {
         if (document.getElementById('last-selected') && document.getElementById('last-selected') !== draggableObject) {
             var elem = document.getElementById('last-selected')
-                elem.removeAttribute('id')
-                elem.removeChild(document.getElementById('remove'))
+            elem.removeAttribute('id')
+            elem.removeChild(document.getElementById('remove'))
         }
         draggableObject.className = 'selected'
         draggableObject.setAttribute('id', 'last-selected')
         if (!draggableObject.contains(document.getElementById("remove"))) {
             var childDiv = document.createElement('div')
-                childDiv.setAttribute('id', 'remove')
-                childDiv.innerText = 'x'
+            childDiv.setAttribute('id', 'remove')
+            childDiv.innerText = 'x'
             draggableObject.appendChild(childDiv)
         }
     }
-}, false)
+}
 
-document.getElementById('draggable-field').addEventListener('touchend', function()
-{
+document.getElementById('draggable-field').addEventListener('mouseup', onTouchEnd, false)
+document.getElementById('draggable-field').addEventListener('touchend', onTouchEnd, false)
+
+function onTouchEnd() {
     draggableObject.className = ''
     draggableObject = null
-}, false)
+}
 
-document.getElementById('draggable-field').addEventListener('touchmove', function(event)
-{
+document.getElementById('draggable-field').addEventListener('mousemove', onMove, false)
+document.getElementById('draggable-field').addEventListener('touchmove', onMove, false)
+
+function onMove(event) {
     if (draggableObject) {
         if (
             (draggableField.offsetLeft - event.pageX + mouseOffset.x) < 0 &&
@@ -61,7 +68,7 @@ document.getElementById('draggable-field').addEventListener('touchmove', functio
             draggableObject.style.top = event.pageY - mouseOffset.y  + 'px'
         }
     }
-}, false)
+}
 
 function getPosition(e) {
     var left = 0
