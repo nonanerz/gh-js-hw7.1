@@ -3,7 +3,6 @@ var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
 
 draggableField.addEventListener('mousedown', onTouch, false)
-draggableField.addEventListener('touchstart', onTouch, false)
 
 function onTouch(event)
 {
