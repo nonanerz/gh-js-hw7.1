@@ -1,4 +1,7 @@
-body {padding:10px}
+body {
+    padding:10px;
+    user-select: none;
+}
 
 #draggable-field {
     margin: 0 auto;
