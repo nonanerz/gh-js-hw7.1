@@ -13,7 +13,6 @@ body {
 }
 
 span {
-    min-width:60px;
     height:20px;
     border: 1px dashed black;
     position: absolute;
@@ -21,6 +20,7 @@ span {
 
 .selected {
     background-color: aquamarine;
+    border: ridge;
 }
 
 #remove {

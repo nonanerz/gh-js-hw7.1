@@ -52,7 +52,7 @@ document.getElementById('draggable-field').addEventListener('mouseup', onTouchEn
 document.getElementById('draggable-field').addEventListener('touchend', onTouchEnd, false)
 
 function onTouchEnd() {
-    draggableObject.className = ''
+    draggableObject.removeAttribute('class')
     draggableObject = null
 }
 
