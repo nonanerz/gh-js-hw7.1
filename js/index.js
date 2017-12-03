@@ -16,7 +16,7 @@ function onTouch(event)
     if (draggableObject.id === 'draggable-field') {
         var child = document.createElement('span')
         if (event.type === 'touchstart') {
-            child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
+            child.innerText = getLorem(Math.floor(Math.random() * 2) + 1)
             child.style.top = event.changedTouches[0].clientY - 10 + 'px'
             child.style.left = event.changedTouches[0].clientX - 30 + 'px'
             draggableObject.appendChild(child)
@@ -83,8 +83,6 @@ function onMove(event) {
                 (draggableField.offsetLeft + draggableField.offsetWidth - event.changedTouches[0].pageX - draggableObject.clientWidth - 2) > 0
             )
             {
-                console.log(event.changedTouches[0].clientX + 'px')
-
                 draggableObject.style.left = event.changedTouches[0].clientX + 'px'
             }
             if (
@@ -92,7 +90,8 @@ function onMove(event) {
                 (draggableField.offsetTop + draggableField.offsetHeight - event.changedTouches[0].pageY - 22) > 0
             )
             {
-                draggableObject.style.top = event.changedTouches[0].pageY  + 'px'
+                console.log(event)
+                draggableObject.style.top = event.changedTouches[0].pageY + 'px'
             }
         }
     }
@@ -101,6 +100,7 @@ function onMove(event) {
 function getPosition(e) {
     var left = 0
     var top  = 0
+
 
     while (e.offsetParent) {
         left += e.offsetLeft
@@ -120,9 +120,6 @@ function getPosition(e) {
 function getLorem(len) {
     var words = ['lorem',
         'ipsum',
-        'dolor',
-        'sit',
-        'amet'
     ]
     var wordCount = (len > words.length) ? (words.length - 1) : len
     var extracted = []
