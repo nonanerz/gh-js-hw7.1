@@ -7,6 +7,7 @@ draggableField.addEventListener('mousedown', onTouch, false)
 
 function onTouch(event)
 {
+    event.preventDefault()
     draggableObject = event.target
     var pos = getPosition(draggableObject)
     mouseOffset= {
@@ -16,7 +17,7 @@ function onTouch(event)
     if (draggableObject.id === 'draggable-field') {
         var child = document.createElement('span')
         if (event.type === 'touchstart') {
-            child.innerText = getLorem(Math.floor(Math.random() * 2) + 1)
+            child.innerText = getLorem(Math.floor(Math.random() * 3) + 1)
             child.style.top = event.changedTouches[0].clientY - 10 + 'px'
             child.style.left = event.changedTouches[0].clientX - 30 + 'px'
             draggableObject.appendChild(child)
@@ -90,7 +91,6 @@ function onMove(event) {
                 (draggableField.offsetTop + draggableField.offsetHeight - event.changedTouches[0].pageY - 22) > 0
             )
             {
-                console.log(event)
                 draggableObject.style.top = event.changedTouches[0].pageY + 'px'
             }
         }
@@ -120,6 +120,7 @@ function getPosition(e) {
 function getLorem(len) {
     var words = ['lorem',
         'ipsum',
+        'dolor'
     ]
     var wordCount = (len > words.length) ? (words.length - 1) : len
     var extracted = []
