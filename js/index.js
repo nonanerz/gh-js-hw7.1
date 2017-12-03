@@ -2,7 +2,7 @@ var draggableObject = null
 var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
 
-draggableField.addEventListener('mousedown', function(event)
+draggableField.addEventListener('touchstart', function(event)
 {
     draggableObject = event.target
     var pos = getPosition(draggableObject)
@@ -37,13 +37,13 @@ draggableField.addEventListener('mousedown', function(event)
     }
 }, false)
 
-document.getElementById('draggable-field').addEventListener('mouseup', function()
+document.getElementById('draggable-field').addEventListener('touchend', function()
 {
     draggableObject.className = ''
     draggableObject = null
 }, false)
 
-document.getElementById('draggable-field').addEventListener('mousemove', function(event)
+document.getElementById('draggable-field').addEventListener('touchmove', function(event)
 {
     if (draggableObject) {
         if (
