@@ -7,7 +7,6 @@ draggableField.addEventListener('mousedown', onTouch, false)
 
 function onTouch(event)
 {
-    event.preventDefault()
     draggableObject = event.target
     var pos = getPosition(draggableObject)
     mouseOffset= {
@@ -24,8 +23,8 @@ function onTouch(event)
             draggableObject.appendChild(child)
         } else {
             child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
-            child.style.top = event.offsetY - 10 + 'px'
-            child.style.left = event.offsetX - 30 + 'px'
+            child.style.top = event.y - event.target.offsetTop - 10 + 'px'
+            child.style.left = event.x - event.target.offsetLeft - 30 + 'px'
             draggableObject.appendChild(child)
         }
     } else if (draggableObject.id === 'remove') {
@@ -48,13 +47,11 @@ function onTouch(event)
     }
 }
 
-
-
 document.querySelector('body').addEventListener('mouseup', onTouchEnd, false)
 document.querySelector('body').addEventListener('touchend', onTouchEnd, false)
 
-function onTouchEnd() {
-    draggableObject.classList.remove('selected')
+function onTouchEnd(event) {
+    event.target.classList.contains('selected') ? event.target.classList.remove('selected'): null
     draggableObject = null
 }
 
@@ -62,11 +59,12 @@ document.querySelector('body').addEventListener('touchmove', onMove, false)
 document.querySelector('body').addEventListener('mousemove', onMove, false)
 
 function onMove(event) {
+
     if (draggableObject && draggableObject.classList.contains('draggable')) {
 
         var removeElement = document.getElementById('remove')
 
-        if ((draggableField.offsetWidth - event.offsetX) > 15) {
+        if (event.x - draggableField.offsetLeft - mouseOffset.x > 15) {
             removeElement.style.float = 'left'
             removeElement.style.borderRight = '1px solid black'
             removeElement.style.borderLeft = '0'
@@ -77,13 +75,16 @@ function onMove(event) {
         }
 
         if (event.type === 'mousemove') {
-
-            console.log(event.offsetX, event.offsetY)
-
-                draggableObject.style.left = event.offsetX - mouseOffset.x + 'px'
-
-                draggableObject.style.top = event.offsetY + 'px'
-
+            if (event.x - draggableField.offsetLeft - mouseOffset.x > 0 &&
+                (draggableField.offsetWidth - event.x + draggableField.offsetLeft + mouseOffset.x - draggableObject.clientWidth - 4 > 0)
+            ) {
+                draggableObject.style.left = event.x - draggableField.offsetLeft - mouseOffset.x + 'px'
+            }
+            if (event.y - draggableField.offsetTop - mouseOffset.y > 0 &&
+                (draggableField.offsetHeight - event.y + draggableField.offsetTop + mouseOffset.y - draggableObject.clientHeight > 0)
+            ) {
+                draggableObject.style.top = event.y - draggableField.offsetTop - mouseOffset.y + 'px'
+            }
         } else {
             if (
                 (draggableField.offsetLeft - event.changedTouches[0].pageX) < 0 &&

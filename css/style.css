@@ -18,16 +18,13 @@ div .draggable {
     height: 20px;
     border: 1px dashed black;
     position: absolute;
-}
-
-.selected {
-    background-color: aquamarine;
-    border: ridge;
+    overflow: auto;
 }
 
 #remove {
+    display: inline-block;
     border-left: 1px solid black;
-    padding: 0 3px 0 3px;
     margin: 0 3px 0 3px;
     color: red;
+    position: relative;
 }
