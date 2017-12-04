@@ -78,31 +78,12 @@ function onMove(event) {
 
         if (event.type === 'mousemove') {
 
-            //
-            // if (wrapper.left + boundingClientRect.width / 2 > event.clientX) {
-            //     tag.x = 0;
-            // } else if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.clientX) {
-            //     tag.x = wrapper.width - boundingClientRect.width;
-            // } else {
-            //     tag.x = parseFloat(ref.style.left) + event.clientX - (boundingClientRect.left + boundingClientRect.width / 2);
-            //     tag.x -= window.scrollX;
-            // }
+            console.log(event.offsetX, event.offsetY)
 
-            console.log(event)
-            if (
-               // (event.offsetX) > 0 &&
-                (event.offsetX - draggableField.clientWidth / 2 > event.clientX) > 0
-            )
-            {
-                draggableObject.style.left = event.offsetX + 'px'
-            }
-            // if (
-            //     (event.offsetY) > 0 &&
-            //     (draggableField.offsetHeight - event.offsetY - 22) > 0
-            // )
-            // {
-            //     draggableObject.style.top = event.offsetY + 'px'
-            // }
+                draggableObject.style.left = event.offsetX - mouseOffset.x + 'px'
+
+                draggableObject.style.top = event.offsetY + 'px'
+
         } else {
             if (
                 (draggableField.offsetLeft - event.changedTouches[0].pageX) < 0 &&
