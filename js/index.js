@@ -15,28 +15,29 @@ function onTouch(event)
         y: event.pageY - pos.y
     }
     if (draggableObject.id === 'draggable-field') {
-        var child = document.createElement('span')
+        var child = document.createElement('div')
+            child.setAttribute('class', 'draggable')
         if (event.type === 'touchstart') {
             child.innerText = getLorem(Math.floor(Math.random() * 3) + 1)
-            child.style.top = event.changedTouches[0].clientY - 10 + 'px'
-            child.style.left = event.changedTouches[0].clientX - 30 + 'px'
+            child.style.top = event.targetTouches[0].clientY - 10 + 'px'
+            child.style.left = event.targetTouches[0].clientX - 30 + 'px'
             draggableObject.appendChild(child)
         } else {
             child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
-            child.style.top = event.clientY - 10 + 'px'
-            child.style.left = event.clientX - 30 + 'px'
+            child.style.top = event.offsetY - 10 + 'px'
+            child.style.left = event.offsetX - 30 + 'px'
             draggableObject.appendChild(child)
         }
     } else if (draggableObject.id === 'remove') {
         var span = document.getElementById('remove').parentNode
-        span.parentNode.removeChild(span)
+            span.parentNode.removeChild(span)
     } else {
         if (document.getElementById('last-selected') && document.getElementById('last-selected') !== draggableObject) {
             var elem = document.getElementById('last-selected')
             elem.removeAttribute('id')
             elem.removeChild(document.getElementById('remove'))
         }
-        draggableObject.className = 'selected'
+        draggableObject.classList.add('selected')
         draggableObject.setAttribute('id', 'last-selected')
         if (!draggableObject.contains(document.getElementById("remove"))) {
             var childDiv = document.createElement('div')
@@ -49,36 +50,60 @@ function onTouch(event)
 
 
 
-document.getElementById('draggable-field').addEventListener('mouseup', onTouchEnd, false)
-document.getElementById('draggable-field').addEventListener('touchend', onTouchEnd, false)
+document.querySelector('body').addEventListener('mouseup', onTouchEnd, false)
+document.querySelector('body').addEventListener('touchend', onTouchEnd, false)
 
 function onTouchEnd() {
-    draggableObject.removeAttribute('class')
+    draggableObject.classList.remove('selected')
     draggableObject = null
 }
 
-document.getElementById('draggable-field').addEventListener('touchmove', onMove, false)
-document.getElementById('draggable-field').addEventListener('mousemove', onMove, false)
+document.querySelector('body').addEventListener('touchmove', onMove, false)
+document.querySelector('body').addEventListener('mousemove', onMove, false)
 
 function onMove(event) {
-    if (draggableObject) {
-        if (event.type === 'mousemove') {
-            if (
-                (draggableField.offsetLeft - event.pageX + mouseOffset.x) < 0 &&
-                (draggableField.offsetLeft + draggableField.offsetWidth - event.pageX + mouseOffset.x - draggableObject.clientWidth - 2) > 0
-            )
-            {
-                draggableObject.style.left = event.pageX - mouseOffset.x + 'px'
-            }
-            if (
-                (draggableField.offsetTop - event.pageY + mouseOffset.y) < 0 &&
-                (draggableField.offsetTop + draggableField.offsetHeight - event.pageY + mouseOffset.y - 22) > 0
-            )
-            {
-                draggableObject.style.top = event.pageY - mouseOffset.y  + 'px'
-            }
+    if (draggableObject && draggableObject.classList.contains('draggable')) {
+
+        var removeElement = document.getElementById('remove')
+
+        if ((draggableField.offsetWidth - event.offsetX) > 15) {
+            removeElement.style.float = 'left'
+            removeElement.style.borderRight = '1px solid black'
+            removeElement.style.borderLeft = '0'
         } else {
-            event.preventDefault()
+            removeElement.style.float = 'right'
+            removeElement.style.borderLeft = '1px solid black'
+            removeElement.style.borderRight = '0'
+        }
+
+        if (event.type === 'mousemove') {
+
+            //
+            // if (wrapper.left + boundingClientRect.width / 2 > event.clientX) {
+            //     tag.x = 0;
+            // } else if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.clientX) {
+            //     tag.x = wrapper.width - boundingClientRect.width;
+            // } else {
+            //     tag.x = parseFloat(ref.style.left) + event.clientX - (boundingClientRect.left + boundingClientRect.width / 2);
+            //     tag.x -= window.scrollX;
+            // }
+
+            console.log(event)
+            if (
+               // (event.offsetX) > 0 &&
+                (event.offsetX - draggableField.clientWidth / 2 > event.clientX) > 0
+            )
+            {
+                draggableObject.style.left = event.offsetX + 'px'
+            }
+            // if (
+            //     (event.offsetY) > 0 &&
+            //     (draggableField.offsetHeight - event.offsetY - 22) > 0
+            // )
+            // {
+            //     draggableObject.style.top = event.offsetY + 'px'
+            // }
+        } else {
             if (
                 (draggableField.offsetLeft - event.changedTouches[0].pageX) < 0 &&
                 (draggableField.offsetLeft + draggableField.offsetWidth - event.changedTouches[0].pageX - draggableObject.clientWidth - 2) > 0

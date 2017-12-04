@@ -1,9 +1,11 @@
 body {
     padding:10px;
     user-select: none;
+    height: 1000px;
 }
 
 #draggable-field {
+    position: relative;
     margin: 0 auto;
     width:400px;
     height:400px;
@@ -12,8 +14,9 @@ body {
     border: 1px solid black;
 }
 
-span {
-    height:20px;
+div .draggable {
+    display: inline-block;
+    height: 20px;
     border: 1px dashed black;
     position: absolute;
 }
@@ -24,10 +27,8 @@ span {
 }
 
 #remove {
-    float: right;
     border-left: 1px solid black;
-    padding-left: 3px ;
+    padding: 0 3px 0 3px;
     margin: 0 3px 0 3px;
     color: red;
-    display: inline-block;
 }
