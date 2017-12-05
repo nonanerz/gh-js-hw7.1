@@ -12,8 +12,7 @@ body {
     padding:10px 12px;
     border: 1px solid black;
 }
-
-div .draggable {
+ .draggable {
     display: inline-block;
     height: 20px;
     border: 1px dashed black;
@@ -22,7 +21,6 @@ div .draggable {
 }
 
 #remove {
-    display: inline-block;
     border-left: 1px solid black;
     margin: 0 3px 0 3px;
     color: red;
