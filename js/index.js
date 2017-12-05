@@ -79,19 +79,20 @@ function onMove(event) {
 
         var removeElement = document.getElementById('remove')
 
-        if (event.x - draggableField.offsetLeft - mouseOffset.x > 30 || draggableField.offsetLeft - event.changedTouches[0].pageX  + event.target.clientWidth < 10) {
-            removeElement.style.float = 'left'
-            removeElement.style.borderRight = '1px solid black'
-            removeElement.style.borderLeft = '0'
-        } else {
-            removeElement.style.float = 'right'
-            removeElement.style.borderLeft = '1px solid black'
-            removeElement.style.borderRight = '0'
-        }
-
         if (event.type === 'mousemove') {
+
+            if (event.x - draggableField.offsetLeft - mouseOffset.x > 30) {
+                removeElement.style.float = 'left'
+                removeElement.style.borderRight = '1px solid black'
+                removeElement.style.borderLeft = '0'
+            } else {
+                removeElement.style.float = 'right'
+                removeElement.style.borderLeft = '1px solid black'
+                removeElement.style.borderRight = '0'
+            }
+
             if (event.x - draggableField.offsetLeft - mouseOffset.x > 0 &&
-                (draggableField.offsetWidth - event.x + draggableField.offsetLeft + mouseOffset.x - draggableObject.clientWidth - 3 > 0)
+                (draggableField.offsetWidth - event.x + draggableField.offsetLeft + mouseOffset.x - draggableObject.clientWidth - 4 > 0)
             ) {
                 draggableObject.style.left = event.x - draggableField.offsetLeft - mouseOffset.x + 'px'
             }
@@ -101,6 +102,15 @@ function onMove(event) {
                 draggableObject.style.top = event.y - draggableField.offsetTop - mouseOffset.y + 'px'
             }
         } else {
+            if (draggableField.offsetLeft - event.changedTouches[0].pageX  + event.target.clientWidth < 10) {
+                removeElement.style.float = 'left'
+                removeElement.style.borderRight = '1px solid black'
+                removeElement.style.borderLeft = '0'
+            } else {
+                removeElement.style.float = 'right'
+                removeElement.style.borderLeft = '1px solid black'
+                removeElement.style.borderRight = '0'
+            }
 
             if (
                 (draggableField.offsetLeft - event.changedTouches[0].pageX + event.target.clientWidth / 2) < 0 &&
