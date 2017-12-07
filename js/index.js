@@ -1,6 +1,7 @@
 var draggableObject = null
 var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
+var pos
 
 draggableField.addEventListener('touchstart', onTouch, false)
 draggableField.addEventListener('mousedown', onTouch, false)
@@ -9,11 +10,7 @@ function onTouch(event)
 {
     event.preventDefault()
     draggableObject = event.target
-    var pos = getPosition(draggableObject)
-    mouseOffset= {
-        x: event.pageX - pos.x,
-        y: event.pageY - pos.y
-    }
+
     if (draggableObject.id === 'draggable-field') {
         //create draggable object
         var child = document.createElement('div')
@@ -34,6 +31,18 @@ function onTouch(event)
             var wrapper = document.getElementById('last-selected').parentNode
                 wrapper.removeChild(document.getElementById('last-selected'))
     } else {
+        pos = getPosition(draggableObject)
+
+        if (event.type === 'touchstart') {
+            event.pageX = event.changedTouches[0].pageX;
+            event.pageY = event.changedTouches[0].pageY;
+        }
+
+        mouseOffset= {
+            x: event.pageX - pos.x,
+            y: event.pageY - pos.y
+        }
+
         //remove x button if so exists
         if (document.getElementById('last-selected') && document.getElementById('last-selected') !== draggableObject) {
             var elem = document.getElementById('last-selected')
@@ -92,10 +101,10 @@ function onMove(event) {
             removeElement.style.borderLeft = '1px solid black'
             removeElement.style.borderRight = '0'
         }
-
-        console.log(draggableField.offsetWidth - event.x + draggableField.offsetLeft + mouseOffset.x - draggableObject.clientWidth)
-        if (event.x - mouseOffset.x - draggableField.offsetLeft > 0 &&
-            (draggableField.offsetWidth - event.x + draggableField.offsetLeft + mouseOffset.x - 4 - draggableObject.clientWidth > 0)        ) {
+        pos = getPosition(draggableObject)
+        if (pos.x - draggableField.offsetLeft > 0 &&
+            (draggableField.offsetWidth - event.x + draggableField.offsetLeft + mouseOffset.x - 4 - draggableObject.clientWidth > 0)
+        ) {
             draggableObject.style.left = event.x - draggableField.offsetLeft - mouseOffset.x + 'px'
         }
         if (event.y - draggableField.offsetTop - mouseOffset.y + 2 > 0 &&
