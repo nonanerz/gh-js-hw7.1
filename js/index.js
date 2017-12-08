@@ -101,17 +101,38 @@ function onMove(event) {
             removeElement.style.borderLeft = '1px solid black'
             removeElement.style.borderRight = '0'
         }
-        pos = getPosition(draggableObject)
-        if (pos.x - draggableField.offsetLeft > 0 &&
-            (draggableField.offsetWidth - event.x + draggableField.offsetLeft + mouseOffset.x - 4 - draggableObject.clientWidth > 0)
-        ) {
-            draggableObject.style.left = event.x - draggableField.offsetLeft - mouseOffset.x + 'px'
+
+        var domRect = draggableField.getBoundingClientRect()
+
+
+        var draggableFieldPos = {
+            top: domRect.top + draggableField.clientTop,
+            left: domRect.left + draggableField.clientLeft
         }
-        if (event.y - draggableField.offsetTop - mouseOffset.y + 2 > 0 &&
-            (draggableField.offsetHeight - event.y + draggableField.offsetTop + mouseOffset.y - 2 - draggableObject.clientHeight > 0)
-        ) {
-            draggableObject.style.top = event.y - draggableField.offsetTop - mouseOffset.y + 'px'
+
+        var draggableObjectPos = {
+            top: event.clientY - draggableFieldPos.top - draggableObject.clientHeight / 2,
+            left: event.clientX - draggableFieldPos.left - draggableObject.clientWidth / 2
         }
+
+        if (draggableObjectPos.top < 0) draggableObjectPos.top = 0
+
+        if (draggableObjectPos.left < 0) {
+            draggableObjectPos.left = 0
+        }
+        if (draggableObjectPos.left + draggableObject.clientWidth > draggableField.clientWidth) {
+            draggableObjectPos.left = draggableField.clientWidth - draggableObject.clientWidth
+        }
+
+        if (draggableObjectPos.top + draggableObject.clientHeight > draggableField.clientHeight) {
+            draggableObjectPos.top = draggableField.clientHeight - draggableObject.clientHeight
+        }
+
+        draggableObject.style.left = draggableObjectPos.left + 'px'
+        draggableObject.style.top = draggableObjectPos.top + 'px'
+
+
+
     }
 }
 
