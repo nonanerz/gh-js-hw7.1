@@ -38,7 +38,6 @@ function onTouch(event)
     } else if (draggableObject.classList.contains('remove')) {
         draggableField.removeChild(event.target.parentNode)
     } else {
-        console.log(2)
         if (document.getElementById('active')) {
             active = document.getElementById('active')
             active.removeAttribute('id')
@@ -65,7 +64,6 @@ function onTouchEnd() {
 
 function onMove(event) {
     if (draggableObject && draggableObject.classList.contains('draggable')) {
-        var removeElement = event.target.children[0]
 
         var domRect = draggableField.getBoundingClientRect()
 
@@ -98,6 +96,7 @@ function onMove(event) {
         if (draggableObjectPos.top + draggableObject.clientHeight > draggableField.clientHeight) {
             draggableObjectPos.top = draggableField.clientHeight - draggableObject.clientHeight
         }
+        var removeElement = draggableObject.children[0]
         draggableObjectPos.left > 30 ? removeElement.style.float = 'left' : removeElement.style.float = 'right'
         draggableObject.style.left = draggableObjectPos.left - 1 + 'px'
         draggableObject.style.top = draggableObjectPos.top + 'px'

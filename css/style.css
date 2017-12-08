@@ -11,7 +11,7 @@ body {
     background-color:#fff;
     border: 1px solid black;
 }
- .draggable {
+.draggable {
     display: inline-block;
     height: 20px;
     background-color: lightsteelblue;
