@@ -2,9 +2,14 @@ var draggableObject = null
 var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
 var draggableObjectPos
+var active
 
 draggableField.addEventListener('touchstart', onTouch, false)
 draggableField.addEventListener('mousedown', onTouch, false)
+document.querySelector('body').addEventListener('mouseup', onTouchEnd, false)
+document.querySelector('body').addEventListener('touchend', onTouchEnd, false)
+document.querySelector('body').addEventListener('touchmove', onMove, false)
+document.querySelector('body').addEventListener('mousemove', onMove, false)
 
 function onTouch(event)
 {
@@ -16,21 +21,30 @@ function onTouch(event)
         var child = document.createElement('div')
             child.setAttribute('class', 'draggable')
         if (event.type === 'touchstart') {
-            child.innerText = getLorem(Math.floor(Math.random() * 3) + 1)
-            child.style.top = event.touches[0].clientY - event.target.offsetTop - 10 + 'px'
-            child.style.left = event.touches[0].clientX - event.target.offsetLeft - 30 + 'px'
-            draggableObject.appendChild(child)
-        } else {
-            child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
-            child.style.top = event.y - event.target.offsetTop - 10 + 'px'
-            child.style.left = event.x - event.target.offsetLeft - 30 + 'px'
-            draggableObject.appendChild(child)
+            event.y = event.touches[0].clientY
+            event.x =event.touches[0].clientX
         }
-    } else if (draggableObject.id === 'remove') {
-        //remove draggable object
-            var wrapper = document.getElementById('last-selected').parentNode
-                wrapper.removeChild(document.getElementById('last-selected'))
+
+        child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
+        child.style.top = event.y - event.target.offsetTop - 10 + 'px'
+        child.style.left = event.x - event.target.offsetLeft - 30 + 'px'
+        draggableObject.appendChild(child)
+
+        var childDiv = document.createElement('div')
+            childDiv.setAttribute('class', 'remove')
+            childDiv.innerText = 'x'
+            child.appendChild(childDiv)
+
+    } else if (draggableObject.classList.contains('remove')) {
+        draggableField.removeChild(event.target.parentNode)
     } else {
+        console.log(2)
+        if (document.getElementById('active')) {
+            active = document.getElementById('active')
+            active.removeAttribute('id')
+        }
+        event.target.setAttribute('id', 'active')
+        active = document.getElementById('active')
         var pos = getPosition(draggableObject)
 
         if (event.type === 'touchstart') {
@@ -42,37 +56,16 @@ function onTouch(event)
             x: event.pageX - pos.x,
             y: event.pageY - pos.y
         }
-
-        //remove x button if so exists
-        if (document.getElementById('last-selected') && document.getElementById('last-selected') !== draggableObject) {
-            var elem = document.getElementById('last-selected')
-            elem.removeAttribute('id')
-            elem.removeChild(document.getElementById('remove'))
-        }
-        draggableObject.setAttribute('id', 'last-selected')
-        if (!draggableObject.contains(document.getElementById("remove"))) {
-            var childDiv = document.createElement('div')
-            childDiv.setAttribute('id', 'remove')
-            childDiv.innerText = 'x'
-            draggableObject.appendChild(childDiv)
-        }
     }
 }
-
-document.querySelector('body').addEventListener('mouseup', onTouchEnd, false)
-document.querySelector('body').addEventListener('touchend', onTouchEnd, false)
 
 function onTouchEnd() {
     draggableObject = null
 }
 
-document.querySelector('body').addEventListener('touchmove', onMove, false)
-document.querySelector('body').addEventListener('mousemove', onMove, false)
-
 function onMove(event) {
     if (draggableObject && draggableObject.classList.contains('draggable')) {
-
-        var removeElement = document.getElementById('remove')
+        var removeElement = event.target.children[0]
 
         var domRect = draggableField.getBoundingClientRect()
 

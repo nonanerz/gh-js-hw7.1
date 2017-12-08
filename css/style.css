@@ -19,8 +19,12 @@ body {
     overflow: auto;
 }
 
-#remove {
+.remove {
     margin: 0 3px 0 3px;
     color: red;
     position: relative;
+    float: left;
+}
+#active {
+    background-color: mediumseagreen;
 }
