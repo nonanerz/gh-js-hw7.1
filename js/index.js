@@ -1,7 +1,7 @@
 var draggableObject = null
 var mouseOffset = null
 var draggableField = document.getElementById('draggable-field')
-var pos
+var draggableObjectPos
 
 draggableField.addEventListener('touchstart', onTouch, false)
 draggableField.addEventListener('mousedown', onTouch, false)
@@ -31,7 +31,7 @@ function onTouch(event)
             var wrapper = document.getElementById('last-selected').parentNode
                 wrapper.removeChild(document.getElementById('last-selected'))
     } else {
-        pos = getPosition(draggableObject)
+        var pos = getPosition(draggableObject)
 
         if (event.type === 'touchstart') {
             event.pageX = event.changedTouches[0].pageX;
@@ -56,21 +56,8 @@ function onTouch(event)
             childDiv.innerText = 'x'
             draggableObject.appendChild(childDiv)
         }
-        var removeElement = document.getElementById('remove')
-
-        if (event.x - draggableField.offsetLeft - mouseOffset.x > 30) {
-            removeElement.style.float = 'left'
-            removeElement.style.borderRight = '1px solid black'
-            removeElement.style.borderLeft = '0'
-        } else {
-            removeElement.style.float = 'right'
-            removeElement.style.borderLeft = '1px solid black'
-            removeElement.style.borderRight = '0'
-        }
     }
 }
-
-
 
 document.querySelector('body').addEventListener('mouseup', onTouchEnd, false)
 document.querySelector('body').addEventListener('touchend', onTouchEnd, false)
@@ -87,32 +74,23 @@ function onMove(event) {
 
         var removeElement = document.getElementById('remove')
 
-        if (event.type === 'touchmove') {
-            event.x = event.changedTouches[0].pageX;
-            event.y = event.changedTouches[0].pageY;
-        }
-
-        if (event.screenX - mouseOffset.x - draggableField.offsetLeft > 30) {
-            removeElement.style.float = 'left'
-            removeElement.style.borderRight = '1px solid black'
-            removeElement.style.borderLeft = '0'
-        } else {
-            removeElement.style.float = 'right'
-            removeElement.style.borderLeft = '1px solid black'
-            removeElement.style.borderRight = '0'
-        }
-
         var domRect = draggableField.getBoundingClientRect()
-
 
         var draggableFieldPos = {
             top: domRect.top + draggableField.clientTop,
             left: domRect.left + draggableField.clientLeft
         }
 
-        var draggableObjectPos = {
-            top: event.clientY - draggableFieldPos.top - draggableObject.clientHeight / 2,
-            left: event.clientX - draggableFieldPos.left - draggableObject.clientWidth / 2
+        if (event.type === 'touchmove') {
+            draggableObjectPos = {
+                top: event.changedTouches[0].clientY - draggableFieldPos.top - mouseOffset.y,
+                left: event.changedTouches[0].clientX - draggableFieldPos.left - mouseOffset.x
+            }
+        } else {
+            draggableObjectPos = {
+                top: event.clientY - draggableFieldPos.top - mouseOffset.y,
+                left: event.clientX - draggableFieldPos.left - mouseOffset.x
+            }
         }
 
         if (draggableObjectPos.top < 0) draggableObjectPos.top = 0
@@ -127,11 +105,9 @@ function onMove(event) {
         if (draggableObjectPos.top + draggableObject.clientHeight > draggableField.clientHeight) {
             draggableObjectPos.top = draggableField.clientHeight - draggableObject.clientHeight
         }
-
-        draggableObject.style.left = draggableObjectPos.left + 'px'
+        draggableObjectPos.left > 30 ? removeElement.style.float = 'left' : removeElement.style.float = 'right'
+        draggableObject.style.left = draggableObjectPos.left - 1 + 'px'
         draggableObject.style.top = draggableObjectPos.top + 'px'
-
-
 
     }
 }

@@ -14,13 +14,12 @@ body {
  .draggable {
     display: inline-block;
     height: 20px;
-    border: 1px dashed black;
+    background-color: lightsteelblue;
     position: absolute;
     overflow: auto;
 }
 
 #remove {
-    border-left: 1px solid black;
     margin: 0 3px 0 3px;
     color: red;
     position: relative;
