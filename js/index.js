@@ -27,13 +27,20 @@ function onTouch(event)
 
         child.innerText = getLorem(Math.floor(Math.random() * 4) + 1)
         child.style.top = event.y - event.target.offsetTop - 10 + 'px'
-        child.style.left = event.x - event.target.offsetLeft - 30 + 'px'
         draggableObject.appendChild(child)
 
         var childDiv = document.createElement('div')
-            childDiv.setAttribute('class', 'remove')
-            childDiv.innerText = 'x'
-            child.appendChild(childDiv)
+        childDiv.setAttribute('class', 'remove')
+        childDiv.innerText = 'x'
+        child.appendChild(childDiv)
+
+        if (event.x - event.target.offsetLeft - 30 < 0) {
+            child.style.left = '0px'
+            child.children[0].style.float = 'right'
+        } else {
+            child.style.left = event.x - event.target.offsetLeft - 30 + 'px'
+        }
+
 
     } else if (draggableObject.classList.contains('remove')) {
         draggableField.removeChild(event.target.parentNode)
